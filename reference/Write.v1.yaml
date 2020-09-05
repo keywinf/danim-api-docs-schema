@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: API
+  title: Write
   version: '1.0'
   description: ''
 servers:
@@ -50,10 +50,10 @@ paths:
                         description: One provided file MIME type does not correspond to its expected type (e.g. if you provide a mp4 when the input should be an image)
                       MissingTemplateDataComposition:
                         type: string
-                        description: 'A required template composition has not been provided in `template_data`, when it should have been (see the important notice above)'
+                        description: 'A required template composition has not been provided in `template_data`, when it should have been (see the [important notice above](#_write_video_create_required-and-optional-compos-and-inputs))'
                       MissingTemplateDataInput:
                         type: string
-                        description: 'A required template input has not been provided in `template_data`, when it should have been (see the important notice above)'
+                        description: 'A required template input has not been provided in `template_data`, when it should have been (see the [important notice above](#_write_video_create_required-and-optional-compos-and-inputs))'
                       WorkspaceNotFound:
                         type: string
                         description: The workspace cannot be found
@@ -96,7 +96,7 @@ paths:
                       name: Alice's video
         '':
           description: ''
-      description: ''
+      description: 'This endpoint lets you create a video from scratch. You may choose to set it as draft, or directly launch it for generation.'
       requestBody:
         content:
           application/json:
@@ -201,6 +201,7 @@ paths:
       tags:
         - public
         - '#_write_video_change'
+      description: 'This endpoint lets you change your video: name, description, etc.'
     parameters: []
   /write/video/remove:
     parameters: []
@@ -224,7 +225,7 @@ paths:
                         type: string
                         description: The video cannot be found
                 type: object
-      description: ''
+      description: This endpoint lets you remove one of your videos.
       parameters: []
       tags:
         - public
@@ -235,6 +236,7 @@ paths:
       tags: []
       responses: {}
       operationId: post-write-video-generate
+      description: This endpoint lets you launch your draft video generation.
 components:
   schemas: {}
   securitySchemes: {}

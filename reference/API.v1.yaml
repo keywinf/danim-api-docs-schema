@@ -56,10 +56,10 @@ paths:
                         description: 'A required template input has not been provided in `template_data`, when it should have been (see the important notice above)'
                       WorkspaceNotFound:
                         type: string
-                        description: When workspace cannot be found
+                        description: The workspace cannot be found
                       TemplateNotFound:
                         type: string
-                        description: When template cannot be found
+                        description: The template cannot be found
                       WorkspaceInconsistency:
                         type: string
                         description: When workspace does not match with template’s one
@@ -186,7 +186,7 @@ paths:
             schema:
               type: object
               properties: {}
-        description: '#_write_video_create_required-and-optional-compos-and-inputs'
+        description: '$ref:#_write_video_create_required-and-optional-compos-and-inputs'
       tags:
         - public
     parameters: []
@@ -212,12 +212,15 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - {}
-                  - properties:
+                  - description: x-data
+                  - description: x-errors
+                    properties:
                       VideoHasAlreadyBeenRemoved:
                         type: string
+                        description: The video has already been removed
                       VideoNotFound:
                         type: string
+                        description: The video cannot be found
                 type: object
       description: ''
       parameters: []

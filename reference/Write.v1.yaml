@@ -110,7 +110,7 @@ paths:
                   type:
                     - object
                     - string
-                  description: 'Template data for generation (_id/value pairs: see examples [below](#bd53dfcd-b562-4ed4-b2c2-eb934eb22353)). If there’s no file (URL, ID, bin, etc.) in your data, you can provide a JSON-encoded string.'
+                  description: 'Template data for generation (_id/value pairs: see examples [below](#_write_video_create_examples)). If there’s no file (URL, ID, bin, etc.) in your data, you can provide a JSON-encoded string.'
                 description:
                   default: 'null'
                   type:

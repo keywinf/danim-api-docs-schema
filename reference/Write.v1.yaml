@@ -269,13 +269,53 @@ paths:
       tags:
         - public
         - '#_write_video_remove'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_id:
+                  type: string
+                  description: The video ID
+              required:
+                - video_id
   /write/video/generate:
     post:
       summary: "\U0001F4BF Generate a video \U0001F680"
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - {}
+                  - properties:
+                      VideoNotFound:
+                        type: string
+                        description: The video cannot be found
+                      PlanIsInsufficientForGeneration:
+                        type: string
+                        description: The plan is not adapted (e.g. “FREE”)
+                      InsufficientCreditsForGeneration:
+                        type: string
+                        description: The plan is adapted but no sufficient credits left
+                type: object
       operationId: post-write-video-generate
       description: This endpoint lets you launch video generation when this one is still a draft.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_id:
+                  type: string
+                  description: The video ID
+              required:
+                - video_id
 components:
   schemas: {}
   securitySchemes: {}

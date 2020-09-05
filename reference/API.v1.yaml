@@ -186,7 +186,7 @@ paths:
             schema:
               type: object
               properties: {}
-        description: ''
+        description: '#_write_video_create_required-and-optional-compos-and-inputs'
       tags:
         - public
     parameters: []
@@ -283,17 +283,6 @@ components:
         InvalidAppSecret:
           type: string
           description: The provided app secret is not correct
-    _PassingJsonErrors:
-      title: _PassingJsonErrors
-      type: object
-      properties:
-        InvalidJson:
-          type: string
-          description: 'The JSON `POST` body cannot be parsed. This might be because it’s actually not JSON, or perhaps you did not correctly set your HTTP `Content-Type` header. Also make sure your JSON attribute keys are strings wrapped with double-quote (“) characters.'
-        MalformedUtf8Characters:
-          type: string
-          description: 'We understood that your code was JSON-like enough to parse it, but some character may have been incorrectly encoded.'
-      x-examples: {}
   securitySchemes: {}
 tags:
   - name: public

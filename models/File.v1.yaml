@@ -1,0 +1,25 @@
+title: File
+type: object
+x-examples: {}
+properties:
+  id:
+    type: string
+    description: ID of the file
+  created_at:
+    type: string
+    description: Date of creation
+  path:
+    type: string
+    description: Relative cloud path (found in the URL)
+  original_name:
+    type: string
+    description: Client file name on upload
+  mime_type:
+    type: string
+    description: MIME type of the file
+  url:
+    type: string
+    description: Complete cloud URL of the file
+  size:
+    type: integer
+    description: Size of the file (B)

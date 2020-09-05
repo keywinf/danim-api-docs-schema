@@ -1,4 +1,4 @@
-title: _FileUploadErrors
+title: _FileRelatedErrors
 type: object
 description: 'You may receive one of the following errors (`meta.type`) in response (see [response details](#_response-details)):'
 properties:

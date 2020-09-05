@@ -1,4 +1,4 @@
-title: _CommonResponseParams
+title: _CommonResponseErrors
 type: object
 properties:
   CommandNotAuthorized:
@@ -10,3 +10,6 @@ properties:
   BadParameter:
     type: string
     description: One provided parameter cannot be accepted as it is in the provided payload for command execution.
+  UnknownError:
+    type: string
+    description: 'We cannot say what occured, but we''ve been alerted and we''ll fix it as soon as possible.'

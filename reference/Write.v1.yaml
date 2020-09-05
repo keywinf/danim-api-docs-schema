@@ -209,10 +209,12 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - {}
-                  - properties:
+                  - description: x-errors
+                  - description: x-data
+                    properties:
                       VideoNotFound:
                         type: string
+                        description: The video cannot be found
                 type: object
               examples:
                 'Example #1: minimalistic':
@@ -332,8 +334,9 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - {}
-                  - properties:
+                  - description: x-data
+                  - description: x-errors
+                    properties:
                       VideoNotFound:
                         type: string
                         description: The video cannot be found

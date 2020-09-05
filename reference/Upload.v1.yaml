@@ -12,6 +12,42 @@ paths:
       responses:
         '200':
           description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - description: x-data
+                    properties:
+                      file:
+                        $ref: ../models/File.v1.yaml
+                  - properties:
+                      EmptyFile:
+                        type: string
+                        description: The file has no content (size to 0)
+                      FileExtensionCannotBeGuessed:
+                        type: string
+                        description: 'File has been downloaded given its URL, but no extension could have been deduced'
+                      FileExtensionIsNotAccepted:
+                        type: string
+                        description: 'File extension is not authorized (in general, on the platform)'
+                      FileIsTooLarge:
+                        type: string
+                        description: File size is too high
+                    description: x-errors
+                type: object
+              examples:
+                'Example #1: basic':
+                  value:
+                    success: true
+                    data:
+                      file:
+                        id: d3f9c21c-9cb8-4f90-80b5-b87e1c951db3
+                        created_at: '2020-09-05T15:40:40+00:00'
+                        original_name: my-pic.jpeg
+                        mime_type: image/jpeg
+                        size: 412941
+                        url: 'https://s3.eu-west-3.amazonaws.com/com.danim.prod/app/app/file-store/68147b15-d6ee-4a2c-bfa0-57242c4d2d97.jpeg'
+                        path: app/app/file-store/68147b15-d6ee-4a2c-bfa0-57242c4d2d97.jpeg
       description: 'This endpoint lets you upload files to our platform, that you may reuse elsewhere using their IDs (e.g. in the `POST` body of another API call).'
       requestBody:
         content:
@@ -24,6 +60,9 @@ paths:
                   description: The file content
               required:
                 - file
+            examples:
+              'Example #1: basic':
+                value: 'file: ...(binary)...'
         description: ''
 components:
   schemas: {}

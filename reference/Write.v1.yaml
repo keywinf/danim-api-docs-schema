@@ -142,6 +142,13 @@ paths:
 
                     If you prefer to get this stuff done via the `GET` method, just add `+get` in your url scheme (e.g. `https+get://my.app/webhook/1`)
                   default: 'null'
+                state:
+                  type: string
+                  enum:
+                    - STATE_DRAFT
+                    - STATE_TO_BE_SENT
+                  default: STATE_TO_BE_SENT
+                  description: 'State of video (e.g. STATE_DRAFT to create a video that will not be generated once created, and that you may generate afterwards via `/write/video/generate`)'
               required:
                 - template_id
                 - template_data

@@ -13,5 +13,17 @@ paths:
         '200':
           description: ''
       description: 'This endpoint lets you upload files to our platform, that you may reuse elsewhere using their IDs (e.g. in the `POST` body of another API call).'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: The file content
+              required:
+                - file
+        description: ''
 components:
   schemas: {}

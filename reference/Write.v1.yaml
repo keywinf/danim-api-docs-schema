@@ -214,6 +214,17 @@ paths:
                       VideoNotFound:
                         type: string
                 type: object
+              examples:
+                'Example #1: minimalistic':
+                  value:
+                    success: true
+                    data: {}
+                'Example #2: inexistent video':
+                  value:
+                    success: false
+                    message: Video with ID 337845a4-7f40-4acd-a662-dfac378126c3 cannot be found.
+                    meta:
+                      type: VideoNotFound
       tags:
         - public
         - '#_write_video_change'
@@ -240,6 +251,18 @@ paths:
               required:
                 - video_id
                 - patch
+            examples:
+              'Example #1: minimalistic':
+                value:
+                  video_id: 607e5f57-6e4f-4d28-bd81-377bb1a40de1
+                  patch:
+                    name: Wonderful house
+                    description: This video shows the rooms...
+              'Example #2: inexistent video':
+                value:
+                  video_id: 337845a4-7f40-4acd-a662-dfac378126c3
+                  patch:
+                    name: Candidates
         description: ''
     parameters: []
   /write/video/remove:

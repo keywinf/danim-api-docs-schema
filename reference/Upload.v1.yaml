@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: Upload
+  version: '1.0'
+servers:
+  - url: 'https://api.danim.com'
+paths:
+  /upload/me:
+    post:
+      summary: ''
+      operationId: post-upload-me
+      responses:
+        '200':
+          description: OK
+components:
+  schemas: {}

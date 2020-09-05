@@ -96,7 +96,7 @@ paths:
                       name: Alice's video
         '':
           description: ''
-      description: zzest
+      description: ''
       requestBody:
         content:
           application/json:
@@ -186,7 +186,7 @@ paths:
             schema:
               type: object
               properties: {}
-        description: test
+        description: ''
       tags:
         - public
     parameters: []
@@ -247,7 +247,7 @@ components:
     _FileUploadErrors:
       title: _FileUploadErrors
       type: object
-      description: 'You may receive one of the following errors (`meta.type`) in response (see [response details](#response-details)):'
+      description: 'You may receive one of the following errors (`meta.type`) in response (see [response details](#_response-details)):'
       properties:
         FileCannotBeDownloaded:
           type: string

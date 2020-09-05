@@ -1,0 +1,298 @@
+openapi: 3.0.0
+info:
+  title: API
+  version: '1.0'
+  description: ''
+servers:
+  - url: 'https://api.danim.com'
+paths:
+  /write/video/create:
+    post:
+      summary: "\U0001F4BF Create a video \U0001F37C"
+      operationId: post-write-video-generate
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - description: x-data
+                    properties:
+                      id:
+                        type: string
+                        description: Video ID
+                      short_id:
+                        type: string
+                        description: 'Video short ID (i.e. which appears publicly in several URLs, such as the player’s one)'
+                      name:
+                        type: string
+                        description: Video name
+                  - description: x-errors
+                    properties:
+                      FileIsTooLarge:
+                        type: string
+                        description: One provided file size is too high
+                      FileExtensionTypeIsNotAccepted:
+                        type: string
+                        description: 'One provided file extension is not authorized (in general, on the platform)'
+                      FileMimeTypeIsNotAccepted:
+                        type: string
+                        description: 'One provided file MIME type is not authorized (in general, on the platform)'
+                      TemplateDataFileNotFound:
+                        type: string
+                        description: 'One provided file ID has been provided but cannot be found in old previous data (e.g. a preloaded-file ID has been provided, but was expired, so that we try to find the ID in old data files, with no success)'
+                      InvalidTemplateDataFileFormat:
+                        type: string
+                        description: One provided file format is not valid.
+                      InvalidTemplateDataFileMimeType:
+                        type: string
+                        description: One provided file MIME type does not correspond to its expected type (e.g. if you provide a mp4 when the input should be an image)
+                      MissingTemplateDataComposition:
+                        type: string
+                        description: 'A required template composition has not been provided in `template_data`, when it should have been (see the important notice above)'
+                      MissingTemplateDataInput:
+                        type: string
+                        description: 'A required template input has not been provided in `template_data`, when it should have been (see the important notice above)'
+                      WorkspaceNotFound:
+                        type: string
+                        description: When workspace cannot be found
+                      TemplateNotFound:
+                        type: string
+                        description: When template cannot be found
+                      WorkspaceInconsistency:
+                        type: string
+                        description: When workspace does not match with template’s one
+                      OrganizationInconsistency:
+                        type: string
+                        description: When workspace organization does not match with template’s one
+                      PlanIsInsufficientForGeneration:
+                        type: string
+                        description: The plan is not adapted (e.g. “FREE”)
+                      InsufficientCreditsForGeneration:
+                        type: string
+                        description: The plan is adapted but no sufficient credits left
+                type: object
+              examples:
+                'Example #1: minimalistic':
+                  value:
+                    success: true
+                    data:
+                      id: cad06342-b853-4e19-8bc9-52f6b613a7b0
+                      short_id: jhads673h
+                      name: 'One video #jhads673h'
+                'Example #2: mistake':
+                  value:
+                    success: false
+                    message: The input "B1" is required but has not been provided
+                    meta:
+                      type: MissingTemplateDataInput
+                'Example #3: with a file':
+                  value:
+                    success: true
+                    data:
+                      id: 80d4139f-1182-4c5b-bd8e-3a00595e08af
+                      short_id: fg56h378k
+                      name: Alice's video
+        '':
+          description: ''
+      description: zzest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template_id:
+                  type: string
+                  description: ID of template from which the video must be generated
+                template_data:
+                  type:
+                    - object
+                    - string
+                  description: 'Template data for generation (_id/value pairs: see examples [below](#bd53dfcd-b562-4ed4-b2c2-eb934eb22353)). If there’s no file (URL, ID, bin, etc.) in your data, you can provide a JSON-encoded string.'
+                description:
+                  default: 'null'
+                  type:
+                    - string
+                    - 'null'
+                  description: Description of the video
+                name:
+                  type:
+                    - string
+                    - 'null'
+                  default: 'Generated (template name + ‘ #’ + short ID)'
+                  description: Name of the video
+                workspace_id:
+                  type:
+                    - string
+                    - 'null'
+                  default: Will be the first of template’s organization (if it exists)
+                  description: Workspace in which the video should be created
+                callback_url:
+                  type:
+                    - string
+                    - 'null'
+                  description: |-
+                    This webhook URL will be sollicitated on video generation success.
+                    It will by default use `POST` method, and provide the following parameters:
+                    * `id` (video ID)
+                    * `raw_url` (video cloud raw URL)
+                    * `player_url` (link for video play - e.g. iframe).
+
+                    If you prefer to get this stuff done via the `GET` method, just add `+get` in your url scheme (e.g. `https+get://my.app/webhook/1`)
+                  default: 'null'
+              required:
+                - template_id
+                - template_data
+            examples:
+              'Example #1: minimalistic':
+                value:
+                  template_id: 967702d6-eb8a-4734-a398-4f3c10359d95
+                  template_data:
+                    A1: Bob's select value
+              'Example #2: mistake':
+                value:
+                  template_id: 967702d6-eb8a-4734-a398-4f3c10359d95
+                  template_data:
+                    A1: Bob's select value
+                    B3: Bob's text value
+              'Example #3: with a file':
+                value:
+                  template_id: 967702d6-eb8a-4734-a398-4f3c10359d95
+                  template_data:
+                    A1: Alice's select value
+                    B1: Alice's text value
+                    B2: www-xxx-yyy-zzz
+                  name: Alice's video
+                  description: 'Hi everyone, this video has an image! Alice.'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+          text/html:
+            schema:
+              type: object
+              properties: {}
+          text/plain:
+            schema:
+              type: object
+              properties: {}
+          application/EDI-X12:
+            schema:
+              type: object
+              properties: {}
+        description: test
+      tags:
+        - public
+    parameters: []
+  /write/video/change:
+    post:
+      summary: "\U0001F4BF Change a video \U0001F58D"
+      operationId: post-write-video-change
+      responses:
+        '200':
+          description: OK
+      tags:
+        - public
+    parameters: []
+  /write/video/remove:
+    parameters: []
+    post:
+      summary: "\U0001F4BF Remove a video \U0001F5D1"
+      operationId: post-write-video-remove
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - {}
+                  - properties:
+                      VideoHasAlreadyBeenRemoved:
+                        type: string
+                      VideoNotFound:
+                        type: string
+                type: object
+      description: ''
+      parameters: []
+      tags:
+        - public
+components:
+  schemas:
+    _CommonResponseParams:
+      title: _CommonResponseParams
+      type: object
+      x-examples:
+        example-1:
+          CommandNotAuthorized: string
+          MissingParameter: string
+          BadParameter: string
+      properties:
+        CommandNotAuthorized:
+          type: string
+          description: The command could not have been executed (e.g. insufficient rights)
+        MissingParameter:
+          type: string
+          description: One parameter is missing in the provided payload for command execution.
+        BadParameter:
+          type: string
+          description: One provided parameter cannot be accepted as it is in the provided payload for command execution.
+    _FileUploadErrors:
+      title: _FileUploadErrors
+      type: object
+      description: 'You may receive one of the following errors (`meta.type`) in response (see [response details](#response-details)):'
+      properties:
+        FileCannotBeDownloaded:
+          type: string
+          description: Impossible to download a remote file given its URL
+        FileMimeTypeCannotBeGuessed:
+          type: string
+          description: 'File has been downloaded given its URL, but no MIME type could have been deduced'
+        FileExtensionCannotBeGuessed:
+          type: string
+          description: 'File has been downloaded given its URL, but no extension could have been deduced'
+        FileIsTooLarge:
+          type: string
+          description: File size is too high
+        FileExtensionIsNotAccepted:
+          type: string
+          description: 'File extension is not authorized (in general, on the platform)'
+        FileMimeTypeIsNotAccepted:
+          type: string
+          description: 'File MIME type is not authorized (in general, on the platform)'
+        EmptyFile:
+          type: string
+          description: The file has no content (size to 0)
+    _AuthErrors:
+      title: _AuthErrors
+      type: object
+      properties:
+        AuthenticationRequired:
+          type: string
+          description: Missing app ID
+        AppDoesNotExist:
+          type: string
+          description: The app does not exist
+        InvalidAppSecret:
+          type: string
+          description: The provided app secret is not correct
+    _PassingJsonErrors:
+      title: _PassingJsonErrors
+      type: object
+      properties:
+        InvalidJson:
+          type: string
+          description: 'The JSON `POST` body cannot be parsed. This might be because it’s actually not JSON, or perhaps you did not correctly set your HTTP `Content-Type` header. Also make sure your JSON attribute keys are strings wrapped with double-quote (“) characters.'
+        MalformedUtf8Characters:
+          type: string
+          description: 'We understood that your code was JSON-like enough to parse it, but some character may have been incorrectly encoded.'
+      x-examples: {}
+  securitySchemes: {}
+tags:
+  - name: public

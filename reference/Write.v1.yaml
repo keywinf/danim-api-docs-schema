@@ -205,10 +205,42 @@ paths:
       responses:
         '200':
           description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - {}
+                  - properties:
+                      VideoNotFound:
+                        type: string
+                type: object
       tags:
         - public
         - '#_write_video_change'
       description: 'This endpoint lets you change your video: name, description, etc.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_id:
+                  type: string
+                  description: The video ID
+                patch:
+                  type: object
+                  description: This is an object holding all the wished changes
+                  properties:
+                    name:
+                      type: string
+                      description: 'Name of the video (title which often appears on snippets, pages, etc.)'
+                    description:
+                      type: string
+                      description: 'Description of the video (used for social sharing, locally on the platform, etc.)'
+              required:
+                - video_id
+                - patch
+        description: ''
     parameters: []
   /write/video/remove:
     parameters: []
@@ -243,7 +275,7 @@ paths:
       tags: []
       responses: {}
       operationId: post-write-video-generate
-      description: This endpoint lets you launch your draft video generation.
+      description: This endpoint lets you launch video generation when this one is still a draft.
 components:
   schemas: {}
   securitySchemes: {}

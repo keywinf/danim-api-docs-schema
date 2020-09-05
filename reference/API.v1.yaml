@@ -243,6 +243,7 @@ components:
         BadParameter:
           type: string
           description: One provided parameter cannot be accepted as it is in the provided payload for command execution.
+      description: ''
     _FileUploadErrors:
       title: _FileUploadErrors
       type: object

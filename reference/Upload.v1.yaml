@@ -11,6 +11,6 @@ paths:
       operationId: post-upload-me
       responses:
         '200':
-          description: OK
+          description: ''
 components:
   schemas: {}

@@ -189,6 +189,7 @@ paths:
         description: '$ref:#_write_video_create_required-and-optional-compos-and-inputs'
       tags:
         - public
+        - '#_write_video_create'
     parameters: []
   /write/video/change:
     post:
@@ -196,9 +197,10 @@ paths:
       operationId: post-write-video-change
       responses:
         '200':
-          description: OK
+          description: ''
       tags:
         - public
+        - '#_write_video_change'
     parameters: []
   /write/video/remove:
     parameters: []
@@ -207,7 +209,7 @@ paths:
       operationId: post-write-video-remove
       responses:
         '200':
-          description: OK
+          description: ''
           content:
             application/json:
               schema:
@@ -226,8 +228,18 @@ paths:
       parameters: []
       tags:
         - public
+        - '#_write_video_remove'
+  /write/video/generate:
+    post:
+      summary: "\U0001F4BF Generate a video \U0001F680"
+      tags: []
+      responses: {}
+      operationId: post-write-video-generate
 components:
   schemas: {}
   securitySchemes: {}
 tags:
   - name: public
+  - name: '#_write_video_create'
+  - name: '#_write_video_change'
+  - name: '#_write_video_remove'

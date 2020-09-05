@@ -12,5 +12,6 @@ paths:
       responses:
         '200':
           description: ''
+      description: 'This endpoint lets you upload files to our platform, that you may reuse elsewhere, using their IDs (e.g. in the `POST` body of another API call).'
 components:
   schemas: {}

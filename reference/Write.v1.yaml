@@ -9,7 +9,7 @@ paths:
   /write/video/create:
     post:
       summary: "\U0001F4BF Create a video \U0001F37C"
-      operationId: post-write-video-generate
+      operationId: post-write-video-create
       responses:
         '200':
           description: ''

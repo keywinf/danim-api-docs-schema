@@ -287,6 +287,17 @@ paths:
                         type: string
                         description: The video cannot be found
                 type: object
+              examples:
+                'Example #1: basic':
+                  value:
+                    success: true
+                    data: {}
+                'Example #2: inexistent video':
+                  value:
+                    success: false
+                    message: Video with ID 337845a4-7f40-4acd-a662-dfac378126c3 cannot be found.
+                    meta:
+                      type: VideoNotFound
       description: This endpoint lets you remove one of your videos.
       parameters: []
       tags:
@@ -303,6 +314,13 @@ paths:
                   description: The video ID
               required:
                 - video_id
+            examples:
+              'Example #1: basic':
+                value:
+                  video_id: 607e5f57-6e4f-4d28-bd81-377bb1a40de1
+              'Example #2: inexistent video':
+                value:
+                  video_id: 337845a4-7f40-4acd-a662-dfac378126c3
   /write/video/generate:
     post:
       summary: "\U0001F4BF Generate a video \U0001F680"
@@ -326,6 +344,17 @@ paths:
                         type: string
                         description: The plan is adapted but no sufficient credits left
                 type: object
+              examples:
+                'Example #1: basic':
+                  value:
+                    success: true
+                    data: {}
+                'Example #2: insufficient plan':
+                  value:
+                    success: false
+                    message: 'Video cost is 8 credits, 6 ones in the organization is therefore insufficient'
+                    meta:
+                      type: InsufficientCreditsForGeneration
       operationId: post-write-video-generate
       description: This endpoint lets you launch video generation when this one is still a draft.
       requestBody:
@@ -339,6 +368,15 @@ paths:
                   description: The video ID
               required:
                 - video_id
+            examples:
+              'Example #1: basic':
+                value:
+                  video_id: 607e5f57-6e4f-4d28-bd81-377bb1a40de1
+              'Example #2: insufficient plan':
+                value:
+                  video_id: 337845a4-7f40-4acd-a662-dfac378126c3
+                  patch:
+                    name: Candidates
 components:
   schemas: {}
   securitySchemes: {}

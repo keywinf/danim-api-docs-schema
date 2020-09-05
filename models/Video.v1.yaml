@@ -1,9 +1,0 @@
-type: object
-title: Video
-x-examples:
-  example-1:
-    id: string
-description: This domain is self-explanatory and is the main one of Danim.
-properties:
-  id:
-    type: string

@@ -1,0 +1,12 @@
+title: _CommonResponseParams
+type: object
+properties:
+  CommandNotAuthorized:
+    type: string
+    description: The command could not have been executed (e.g. insufficient rights)
+  MissingParameter:
+    type: string
+    description: One parameter is missing in the provided payload for command execution.
+  BadParameter:
+    type: string
+    description: One provided parameter cannot be accepted as it is in the provided payload for command execution.

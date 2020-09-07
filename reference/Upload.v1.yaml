@@ -7,7 +7,7 @@ servers:
 paths:
   /upload/me:
     post:
-      summary: ''
+      summary: "\U0001F5C2 Upload a file ☁️"
       operationId: post-upload-me
       responses:
         '200':
@@ -20,7 +20,8 @@ paths:
                     properties:
                       file:
                         $ref: ../models/File.v1.yaml
-                  - properties:
+                  - description: x-errors
+                    properties:
                       EmptyFile:
                         type: string
                         description: The file has no content (size to 0)
@@ -33,7 +34,6 @@ paths:
                       FileIsTooLarge:
                         type: string
                         description: File size is too high
-                    description: x-errors
                 type: object
               examples:
                 'Example #1: basic':

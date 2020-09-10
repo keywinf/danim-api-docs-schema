@@ -1,0 +1,546 @@
+openapi: 3.0.0
+info:
+  title: Danim API
+  version: '1.0'
+  description: |-
+    From the generation of personalized videos for your users and clients to the large-scale marketing campaign, Danim has been designed to open the door to your creativity.
+    The Danim API is an interface for reading and writing data from and to client online accounts, organizations that holds them, videos having been or being generated, and so on.
+  contact:
+    name: Danim Support
+    url: 'https://danim.com'
+    email: support@danim.com
+  termsOfService: 'https://danim.com/cguv'
+servers:
+  - url: 'https://api.danim.com'
+paths:
+  /upload/me:
+    post:
+      summary: Upload a file
+      operationId: post-upload-me
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - description: success
+                    properties:
+                      success:
+                        type: boolean
+                      data:
+                        type: object
+                        required:
+                          - file
+                        properties:
+                          file:
+                            $ref: ../models/File.yaml
+                    required:
+                      - success
+                      - data
+                  - description: error
+                    properties:
+                      success:
+                        type: boolean
+                      message:
+                        type: string
+                      meta:
+                        type: object
+                        required:
+                          - type
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - EmptyFile
+                              - FileExtensionCannotBeGuessed
+                              - FileExtensionIsNotAccepted
+                              - FileIsTooLarge
+                            x-enum-description:
+                              EmptyFile: The file has no content (size to 0)
+                              FileExtensionCannotBeGuessed: 'File has been downloaded given its URL, but no extension could have been deduced'
+                              FileExtensionIsNotAccepted: 'File extension is not authorized (in general, on the platform)'
+                              FileIsTooLarge: File size is too high
+                    required:
+                      - success
+                      - message
+                      - meta
+                type: object
+              examples:
+                'Example #1: basic':
+                  value:
+                    success: true
+                    data:
+                      file:
+                        id: d3f9c21c-9cb8-4f90-80b5-b87e1c951db3
+                        created_at: '2020-09-05T15:40:40+00:00'
+                        original_name: my-pic.jpeg
+                        mime_type: image/jpeg
+                        size: 412941
+                        url: 'https://s3.eu-west-3.amazonaws.com/com.danim.prod/app/app/file-store/68147b15-d6ee-4a2c-bfa0-57242c4d2d97.jpeg'
+                        path: app/app/file-store/68147b15-d6ee-4a2c-bfa0-57242c4d2d97.jpeg
+      description: 'This endpoint lets you upload files to our platform, that you may reuse elsewhere using their IDs (e.g. in the `POST` body of another API call).'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: The file content
+              required:
+                - file
+            examples:
+              'Example #1: basic':
+                value:
+                  file: ...(binary)...
+        description: ''
+  /write/video/create:
+    post:
+      summary: Create a video
+      operationId: post-write-video-create
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - description: success
+                    properties:
+                      success:
+                        type: boolean
+                      data:
+                        type: object
+                        required:
+                          - id
+                          - short_id
+                          - name
+                        properties:
+                          id:
+                            type: string
+                            description: Video ID
+                          short_id:
+                            type: string
+                            description: 'Video short ID (i.e. which appears publicly in several URLs, such as the player’s one)'
+                          name:
+                            type: string
+                            description: Video name
+                    required:
+                      - success
+                      - data
+                  - description: error
+                    properties:
+                      success:
+                        type: boolean
+                      message:
+                        type: string
+                      meta:
+                        type: object
+                        required:
+                          - type
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - FileIsTooLarge
+                              - FileExtensionTypeIsNotAccepted
+                              - FileMimeTypeIsNotAccepted
+                              - TemplateDataFileNotFound
+                              - InvalidTemplateDataFileFormat
+                              - InvalidTemplateDataFileMimeType
+                              - MissingTemplateDataComposition
+                              - MissingTemplateDataInput
+                              - WorkspaceNotFound
+                              - TemplateNotFound
+                              - WorkspaceInconsistency
+                              - OrganizationInconsistency
+                              - PlanIsInsufficientForGeneration
+                              - InsufficientCreditsForGeneration
+                            x-enum-description:
+                              FileIsTooLarge: One provided file size is too high
+                              FileExtensionTypeIsNotAccepted: 'One provided file extension is not authorized (in general, on the platform)'
+                              FileMimeTypeIsNotAccepted: 'One provided file MIME type is not authorized (in general, on the platform)'
+                              TemplateDataFileNotFound: 'One provided file ID has been provided but cannot be found in old previous data (e.g. a preloaded-file ID has been provided, but was expired, so that we try to find the ID in old data files, with no success)'
+                              InvalidTemplateDataFileFormat: One provided file format is not valid.
+                              InvalidTemplateDataFileMimeType: One provided file MIME type does not correspond to its expected type (e.g. if you provide a mp4 when the input should be an image)
+                              MissingTemplateDataComposition: 'A required template composition has not been provided in `template_data`, when it should have been'
+                              MissingTemplateDataInput: 'A required template input has not been provided in `template_data`, when it should have been'
+                              WorkspaceNotFound: The workspace cannot be found
+                              TemplateNotFound: The template cannot be found
+                              WorkspaceInconsistency: When workspace does not match with template’s one
+                              OrganizationInconsistency: When workspace organization does not match with template’s one
+                              PlanIsInsufficientForGeneration: The plan is not adapted (e.g. “FREE”)
+                              InsufficientCreditsForGeneration: The plan is adapted but no sufficient credits left
+                    required:
+                      - success
+                      - message
+                      - meta
+                type: object
+              examples:
+                'Example #1: minimalistic':
+                  value:
+                    success: true
+                    data:
+                      id: cad06342-b853-4e19-8bc9-52f6b613a7b0
+                      short_id: jhads673h
+                      name: 'One video #jhads673h'
+                'Example #2: mistake':
+                  value:
+                    success: false
+                    message: The input "B1" is required but has not been provided
+                    meta:
+                      type: MissingTemplateDataInput
+                'Example #3: with a file':
+                  value:
+                    success: true
+                    data:
+                      id: 80d4139f-1182-4c5b-bd8e-3a00595e08af
+                      short_id: fg56h378k
+                      name: Alice's video
+        '':
+          description: ''
+      description: 'This endpoint lets you create a video from scratch. You may choose to set it as draft, or directly launch it for generation.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template_id:
+                  type: string
+                  description: ID of template from which the video must be generated
+                template_data:
+                  type: object
+                  description: 'Template data for generation (_id/value pairs: see examples [below](#_write_video_create_examples)). If there’s no file (URL, ID, bin, etc.) in your data, you can provide a JSON-encoded string.'
+                description:
+                  default: null
+                  type:
+                    - string
+                    - 'null'
+                  description: Description of the video
+                name:
+                  type:
+                    - string
+                    - 'null'
+                  default: 'Generated (template name + ‘ #’ + short ID)'
+                  description: Name of the video
+                workspace_id:
+                  type:
+                    - string
+                    - 'null'
+                  default: Will be the first of template’s organization (if it exists)
+                  description: Workspace in which the video should be created
+                callback_url:
+                  type:
+                    - string
+                    - 'null'
+                  description: |-
+                    This webhook URL will be sollicitated on video generation success.
+                    It will by default use `POST` method, and provide the following parameters:
+                    * `id` (video ID)
+                    * `raw_url` (video cloud raw URL)
+                    * `player_url` (link for video play - e.g. iframe).
+
+                    If you prefer to get this stuff done via the `GET` method, just add `+get` in your url scheme (e.g. `https+get://my.app/webhook/1`)
+                  default: 'null'
+                state:
+                  type: string
+                  enum:
+                    - STATE_DRAFT
+                    - STATE_TO_BE_SENT
+                  default: STATE_TO_BE_SENT
+                  description: 'State of video (e.g. STATE_DRAFT to create a video that will not be generated once created, and that you may generate afterwards via `/write/video/generate`)'
+              required:
+                - template_id
+                - template_data
+            examples:
+              'Example #1: minimalistic':
+                value:
+                  template_id: 967702d6-eb8a-4734-a398-4f3c10359d95
+                  template_data:
+                    A1: Bob's select value
+              'Example #2: mistake':
+                value:
+                  template_id: 967702d6-eb8a-4734-a398-4f3c10359d95
+                  template_data:
+                    A1: Bob's select value
+                    B3: Bob's text value
+              'Example #3: with a file':
+                value:
+                  template_id: 967702d6-eb8a-4734-a398-4f3c10359d95
+                  template_data:
+                    A1: Alice's select value
+                    B1: Alice's text value
+                    B2: www-xxx-yyy-zzz
+                  name: Alice's video
+                  description: 'Hi everyone, this video has an image! Alice.'
+        description: ''
+      tags:
+        - public
+    parameters: []
+  /write/video/change:
+    post:
+      summary: Change a video
+      operationId: post-write-video-change
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - description: success
+                    properties:
+                      success:
+                        type: boolean
+                      data:
+                        type: object
+                        properties: null
+                    required:
+                      - success
+                  - description: error
+                    properties:
+                      success:
+                        type: boolean
+                      message:
+                        type: string
+                      meta:
+                        type: object
+                        required:
+                          - type
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - VideoNotFound
+                            x-enum-description:
+                              VideoNotFound: The video cannot be found
+                    required:
+                      - success
+                      - message
+                      - meta
+                type: object
+              examples:
+                'Example #1: minimalistic':
+                  value:
+                    success: true
+                    data: {}
+                'Example #2: inexistent video':
+                  value:
+                    success: false
+                    message: Video with ID 337845a4-7f40-4acd-a662-dfac378126c3 cannot be found.
+                    meta:
+                      type: VideoNotFound
+      tags:
+        - public
+      description: 'This endpoint lets you change your video: name, description, etc.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_id:
+                  type: string
+                  description: The video ID
+                patch:
+                  type: object
+                  description: This is an object holding all the wished changes
+                  properties:
+                    name:
+                      type: string
+                      description: 'Name of the video (title which often appears on snippets, pages, etc.)'
+                    description:
+                      type: string
+                      description: 'Description of the video (used for social sharing, locally on the platform, etc.)'
+              required:
+                - video_id
+                - patch
+            examples:
+              'Example #1: minimalistic':
+                value:
+                  video_id: 607e5f57-6e4f-4d28-bd81-377bb1a40de1
+                  patch:
+                    name: Wonderful house
+                    description: This video shows the rooms...
+              'Example #2: inexistent video':
+                value:
+                  video_id: 337845a4-7f40-4acd-a662-dfac378126c3
+                  patch:
+                    name: Candidates
+        description: ''
+    parameters: []
+  /write/video/remove:
+    parameters: []
+    post:
+      summary: Remove a video
+      operationId: post-write-video-remove
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - description: success
+                    properties:
+                      success:
+                        type: boolean
+                      data:
+                        type: object
+                    required:
+                      - success
+                  - description: error
+                    properties:
+                      success:
+                        type: boolean
+                      message:
+                        type: string
+                      meta:
+                        type: object
+                        required:
+                          - type
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - VideoHasAlreadyBeenRemoved
+                              - VideoNotFound
+                            x-enum-description:
+                              VideoHasAlreadyBeenRemoved: The video has already been removed
+                              VideoNotFound: The video cannot be found
+                    required:
+                      - success
+                      - message
+                      - meta
+                type: object
+              examples:
+                'Example #1: basic':
+                  value:
+                    success: true
+                    data: {}
+                'Example #2: inexistent video':
+                  value:
+                    success: false
+                    message: Video with ID 337845a4-7f40-4acd-a662-dfac378126c3 cannot be found.
+                    meta:
+                      type: VideoNotFound
+      description: This endpoint lets you remove one of your videos.
+      parameters: []
+      tags:
+        - public
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_id:
+                  type: string
+                  description: The video ID
+              required:
+                - video_id
+            examples:
+              'Example #1: basic':
+                value:
+                  video_id: 607e5f57-6e4f-4d28-bd81-377bb1a40de1
+              'Example #2: inexistent video':
+                value:
+                  video_id: 337845a4-7f40-4acd-a662-dfac378126c3
+  /write/video/generate:
+    post:
+      summary: Generate a video
+      tags: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - description: success
+                    properties:
+                      success:
+                        type: boolean
+                      data:
+                        type: object
+                        properties: null
+                    required:
+                      - success
+                  - description: error
+                    properties:
+                      success:
+                        type: boolean
+                      message:
+                        type: string
+                      meta:
+                        type: object
+                        required:
+                          - type
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - VideoNotFound
+                              - PlanIsInsufficientForGeneration
+                              - InsufficientCreditsForGeneration
+                            x-enum-description:
+                              VideoNotFound: The video cannot be found
+                              PlanIsInsufficientForGeneration: The plan is not adapted (e.g. “FREE”)
+                              InsufficientCreditsForGeneration: The plan is adapted but no sufficient credits left
+                    required:
+                      - success
+                      - message
+                      - meta
+                type: object
+              examples:
+                'Example #1: basic':
+                  value:
+                    success: true
+                    data: {}
+                'Example #2: insufficient plan':
+                  value:
+                    success: false
+                    message: 'Video cost is 8 credits, 6 ones in the organization is therefore insufficient'
+                    meta:
+                      type: InsufficientCreditsForGeneration
+      operationId: post-write-video-generate
+      description: This endpoint lets you launch video generation when this one is still a draft.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_id:
+                  type: string
+                  description: The video ID
+              required:
+                - video_id
+            examples:
+              'Example #1: basic':
+                value:
+                  video_id: 607e5f57-6e4f-4d28-bd81-377bb1a40de1
+              'Example #2: insufficient plan':
+                value:
+                  video_id: 337845a4-7f40-4acd-a662-dfac378126c3
+                  patch:
+                    name: Candidates
+components:
+  schemas: {}
+  securitySchemes:
+    X-App-Id:
+      name: App Id
+      type: apiKey
+      in: header
+    X-App-Secret:
+      name: App Secret
+      type: apiKey
+      in: header
+tags:
+  - name: public
+security:
+  - X-App-Id: []
+  - X-App-Secret: []

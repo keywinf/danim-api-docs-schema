@@ -1,0 +1,34 @@
+schema:
+  oneOf:
+    - description: success
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+      required:
+        - success
+        - data
+    - description: error
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        meta:
+          type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - Example
+              x-enum-description:
+                Example: La description
+      required:
+        - success
+        - message
+        - meta
+  type: object

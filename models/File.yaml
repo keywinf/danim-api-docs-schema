@@ -23,3 +23,11 @@ properties:
   size:
     type: integer
     description: Size of the file (B)
+required:
+  - id
+  - created_at
+  - path
+  - original_name
+  - mime_type
+  - url
+  - size

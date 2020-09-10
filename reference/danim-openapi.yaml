@@ -96,6 +96,8 @@ paths:
                 value:
                   file: ...(binary)...
         description: ''
+      tags:
+        - public
   /write/video/create:
     post:
       summary: Create a video
@@ -452,7 +454,8 @@ paths:
   /write/video/generate:
     post:
       summary: Generate a video
-      tags: []
+      tags:
+        - public
       responses:
         '200':
           description: ''
